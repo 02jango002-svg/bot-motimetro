@@ -14,11 +14,12 @@ def home():
 
 
 def run():
-  app.run(host='0.0.0.0', port=10000)
+  app.run(host='0.0.0.0', port=10000, debug=False, use_reloader=False)
 
 
 def keep_alive():
   t = threading.Thread(target=run)
+  t.daemon = True
   t.start()
 
 
@@ -36,7 +37,7 @@ def main():
       'TELEGRAM_BOT_TOKEN', '8978065603:AAFv2y1rw0sG9QnFJ2h1ZemuUoea33ERh9g'
   )
 
-  # Iniciar servidor web en segundo plano (hilo separado)
+  # Iniciar servidor web en segundo plano
   keep_alive()
 
   # Iniciar bot de Telegram
@@ -44,7 +45,7 @@ def main():
   application.add_handler(CommandHandler('start', start))
 
   print('Iniciando bot de Telegram...')
-  application.run_polling()
+  application.run_polling(drop_pending_updates=True)
 
 
 if __name__ == '__main__':
